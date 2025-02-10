@@ -1,15 +1,15 @@
+require('dotenv').config();
 const express = require('express');
-const { resolve } = require('path');
-
+const mongoose = require('mongoose');
+const Item = require('./models/Item');
 const app = express();
-const port = 3010;
 
-app.use(express.static('static'));
+app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.sendFile(resolve(__dirname, 'pages/index.html'));
-});
+// MongoDB Connection
+const mongoURI = process.env.MONGO_URI;
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch((err) => console.error('MongoDB connection error:', err));
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+// CRUD endpoints here (PUT and DELETE)
